@@ -1,3 +1,11 @@
+#Project specific
+data/
+.vscode/
+.Trash-*/
+kaggle.json
+*.zip
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -73,11 +81,6 @@ docs/_build/
 
 # PyBuilder
 target/
-
-#other
-data/
-.vscode/
-.Trash-*/
 
 # Jupyter Notebook
 .ipynb_checkpoints
