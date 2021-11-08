@@ -6,10 +6,35 @@ In this project, we will work on an image quality improvement method. Given a se
 
 [Link](https://www.notion.so/mactat/DL-IQIWA-eb556f9153db4e8495516b5a2f4fa86b) to wiki (notion)
 
+TODO
+- [x]  Introduce different types of noises to cifar10 photos
+- [x]  Visualize dataset with different noises
+- [x]  Deliver synopsis
+- [x]  Build autoencoder
+- [x]  Build autoencoder
+- [x]  Denoise cifar10 photos
+- [ ]  Cats and dogs dataset
+- [ ]  Enhance Cats and dogs dataset photos resolution
+- [ ]  Enhance cifar10 photos resolution - [link](https://www.analyticsvidhya.com/blog/2020/02/what-is-autoencoder-enhance-image-resolution/)
+- [ ]  Choose different dataset
+- [ ]  Build autoencoder and autoencoder for it
+- [ ]  Enhance and denoise - real-life photos
+- [ ]  Poster
+
+## For local development
+Dev docker image: `mactat/dl-iqiwa:latest`
 ```
-Dev docker image:
-mactat/dl-iqiwa:latest
+git clone <repo>
+cd <project-dir>
+docker compose pull
+docker compose up
 ```
+Go to `http://127.0.0.1:42065/?token=pass`
+
+You can also set your jupyter interpreter in vscode to `http://127.0.0.1:42065/?token=pass`
+
+Enjoy :)
+
 ## **Results from variational autoencoder**
 
 ### Model definition:
