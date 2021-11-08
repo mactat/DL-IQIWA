@@ -1,4 +1,5 @@
 [![Build status](https://dev.azure.com/s202609/Other/_apis/build/status/Build%20Jupyter%20notebook)](https://dev.azure.com/s202609/Other/_build/latest?definitionId=8)
+![Heroku](https://pyheroku-badge.herokuapp.com/?app=jupiter-server-dl&style=flat)
 # DL-IQIWA - Image quality improvement with autoencoders
 
 In this project, we will work on an image quality improvement method. Given a set of high quality images, we will apply transformations that mimic the common quality issues. Then, we will train a network(autoencoder) to reconstruct the original, high quality image. 
