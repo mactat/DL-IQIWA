@@ -4,9 +4,9 @@ In this project, we will work on an image quality improvement method. Given a se
 
 [Link](https://www.notion.so/mactat/DL-IQIWA-eb556f9153db4e8495516b5a2f4fa86b) to wiki (notiion): 
 
-**Results from variational autoencoder**
+## **Results from variational autoencoder**
 
-Model definition:
+### Model definition:
 
 ```
 ----------------------------------------------------------------
@@ -36,17 +36,18 @@ Estimated Total Size (MB): 57.51
 ----------------------------------------------------------------
 Number of parameters: 522519
 ```
+### Example of noised and denoised images:
 
 Original image            |  Reconstruction            
 :-------------------------:|:-------------------------:
 ![](/static/vae_model/orginal.png)  |  ![](/static/vae_model/reconstruction.png)
 
 
-**Results from convolutional autoencoder**:
+## **Results from convolutional autoencoder**:
 
 [link to notebook](https://github.com/mactat/DL-IQIWA/blob/main/notebooks/AutoEncoder.ipynb)
 
-Model definition:
+### Model definition:
 
 ```
 ----------------------------------------------------------------
@@ -77,19 +78,20 @@ Estimated Total Size (MB): 0.30
 ----------------------------------------------------------------
 ```
 
+### Example of image reconstruction
 
 Original image            |  Reconstruction            |  Image with noise            |  Reconstruction
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](/static/conv_model/examp_1_original.png)  |  ![](/static/conv_model/examp_1_recons.png)  |  ![](/static/conv_model/examp_1_noise.png)  |  ![](/static/conv_model/examp_1_noise_recons.png)
 
-Example of 20 noised and denoised images:
+### Example of 400 noised and denoised images:
 ![](/static/conv_model/examp_1_noise_vs_recons.png)
 
-**Results from enhanced convolutional autoencoder**:
+## **Results from enhanced convolutional autoencoder**:
 
 [link to notebook](https://github.com/mactat/DL-IQIWA/blob/main/notebooks/AutoEncoder_Pool_Upsample.ipynb)
 
-Model definition:
+### Model definition:
 
 ```
 ----------------------------------------------------------------
@@ -119,11 +121,11 @@ Params size (MB): 0.09
 Estimated Total Size (MB): 0.30
 ----------------------------------------------------------------
 ```
-
+### Example of image reconstruction
 Original image            |  Reconstruction            |  Image with noise            |  Reconstruction
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](/static/enhanced_conv_model_trained_with_noisy/original_cat.png)  |  ![](/static/enhanced_conv_model_trained_with_noisy/reconstructed_cat_from_original.png)  |  ![](/static/enhanced_conv_model_trained_with_noisy/cat_with_noise_02.png)  |  ![](/static/enhanced_conv_model_trained_with_noisy/reconstructed_cat_from_noise_02.png)
 
 
-Example of 20 noised and denoised images:
+### Example of 400 noised and denoised images:
 ![](/static/enhanced_conv_model_trained_with_noisy/comparision_20_20.png)
