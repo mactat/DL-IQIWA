@@ -4,7 +4,14 @@ In this project, we will work on an image quality improvement method. Given a se
 
 Link to wiki: https://www.notion.so/mactat/DL-IQIWA-eb556f9153db4e8495516b5a2f4fa86b
 
-First try with convolutional autoencoder:
+Results from variational autoencoder(xd)
+
+Original image            |  Reconstruction            
+:-------------------------:|:-------------------------:
+![](/static/vae_model/orginal.png)  |  ![](/static/vae_model/reconstruction.png)
+
+
+Results from convolutional autoencoder:
 
 Original image            |  Reconstruction            |  Image with noise            |  Reconstruction
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
