@@ -19,13 +19,14 @@ RUN pip3 install \
     # Numpy and Pandas are required a-priori
     numpy pandas \
     # PyTorch with CUDA 10.2 support and Torchvision
-    torch torchvision \
+    torch torchvision torchsummary\
     # Upgraded version of Tensorboard with more features
     tensorboardX \
     # Matplotlib
     matplotlib \
     # kaggle \
-    kaggle 
+    kaggle
+
 
 # Here we use a base image by its name - "jupyter-base"
 FROM jupyter-base

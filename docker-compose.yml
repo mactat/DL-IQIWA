@@ -2,7 +2,7 @@ version: "3.8"
 services:
     jupyter-server:
         image: mactat/dl-iqiwa:latest
-        pull_policy: always
+        # pull_policy: always
         init: true
         build:
             context: ./
