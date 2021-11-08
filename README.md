@@ -6,10 +6,20 @@ In this project, we will work on an image quality improvement method. Given a se
 
 [Link](https://www.notion.so/mactat/DL-IQIWA-eb556f9153db4e8495516b5a2f4fa86b) to wiki (notion)
 
+## For local development
+Dev docker image: `mactat/dl-iqiwa:latest`
 ```
-Dev docker image:
-mactat/dl-iqiwa:latest
+git clone <repo>
+cd <project-dir>
+docker compose pull
+docker compose up
 ```
+Go to `http://127.0.0.1:42065/?token=pass`
+
+You can also set your jupyter interpreter in vscode to `http://127.0.0.1:42065/?token=pass`
+
+Enjoy :)
+
 ## **Results from variational autoencoder**
 
 ### Model definition:
