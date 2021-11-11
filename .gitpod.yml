@@ -1,0 +1,5 @@
+tasks:
+  - init: |
+      echo 'Building libraries'
+    command: |
+      pip install -r requirements.txt
