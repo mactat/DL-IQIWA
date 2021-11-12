@@ -16,51 +16,24 @@ import numpy as np
 import random
 from datetime import datetime
 
+
 input_size = (180, 180)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class Encoder(nn.Module):
+class Model(nn.Module):
     def __init__(self):
-        super(Encoder, self).__init__()                                                              # input image size: 180 x 180
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=4, stride=2, padding=1)   # out image size:  90 x 90
-        self.pool = nn.MaxPool2d((2, 2))                                                             # out image size:  45 x 45
-        self.conv2 = nn.Conv2d(in_channels=32, out_channels=8, kernel_size=3, stride=2, padding=1)   # out image size:  23 x 23
+        super(Model, self).__init__()                                                               # input image size: 180 x 180
+        self.conv1 = nn.ConvTranspose2d(in_channels=3, out_channels=10, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180                                                       # out image size:  90 x 90
+        self.conv2 = nn.ConvTranspose2d(in_channels=10, out_channels=20, kernel_size=3, stride=2, padding=1)   # out image size:  359 x 359
+        self.conv3 = nn.ConvTranspose2d(in_channels=20, out_channels=3, kernel_size=4, stride=1, padding=1)   # out image size: 360 x 360
             
     def forward(self, x):
         x = F.relu(self.conv1(x))
-        x = self.pool(x)
-        x = F.relu(self.conv2(x))
-        return x
-
-class Decoder(nn.Module):
-    def __init__(self):
-        super(Decoder, self).__init__()
-        self.conv1 = nn.ConvTranspose2d(in_channels=8, out_channels=16, kernel_size=3, stride=2, padding=1)   # out image size: 45 x 45
-        self.upSample = nn.Upsample(scale_factor=2)                                                           # out image size:  90 x 90
-        self.conv2 = nn.ConvTranspose2d(in_channels=16, out_channels=32, kernel_size=4, stride=2, padding=1)  # out image size:  180 x 180
-        self.conv3 = nn.ConvTranspose2d(in_channels=32, out_channels=3, kernel_size=4, stride=2, padding=1)   # out image size: 360 x 360
-            
-    def forward(self, x):
-        x = F.relu(self.conv1(x))
-        x = self.upSample(x)
         x = F.relu(self.conv2(x))
         x = torch.sigmoid(self.conv3(x))
         return x
-    
-class Model(nn.Module):
-    def __init__(self):
-        super(Model, self).__init__()
-        self.encoder = Encoder()
-        self.decoder = Decoder()
-    
-    def forward(self, x):
-        x = self.encoder(x)
-        x = self.decoder(x)
-        return x
 
-
-
-def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
+def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((180, 180))):
     size = len(dataloader.dataset)
     model.train()
     train_loss = []
@@ -87,7 +60,7 @@ def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(inp
     return (sum(train_loss))/len(train_loss)
 
 
-def validate(dataloader, model, loss_fn, transform=transforms.Resize(input_size)):
+def validate(dataloader, model, loss_fn, transform=transforms.Resize((180, 180))):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     model.eval()

@@ -14,8 +14,30 @@ from IPython.display import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-from model import *
 from datasetLoad import *
+import importlib
+import argparse
+
+#parsing args
+parser = argparse.ArgumentParser(description='Parameters for training')
+
+parser.add_argument('--model',  default="model",help='Specify the model file(without .py extension)')
+parser.add_argument('--epochs',  type=int,  default=5, help='Specify the number of epochs')
+parser.add_argument('--verbose', type=bool, default=True, help='Print output or not')
+
+args = parser.parse_args()
+
+print(f"Model file ./{args.model}.py\nNumber of epochs:{args.epochs}\n")
+
+
+try:
+    modellib = importlib.import_module(args.model)
+    Model = modellib.Model
+    train = modellib.train
+    validate = modellib.validate
+    save_model = modellib.save_model
+except:
+    raise Exception('Unable to import model lib!') 
 
 divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
@@ -59,7 +81,7 @@ cur_model = Model()
 cur_model = cur_model.to(device)
 
 learning_rate = 1e-3
-num_epochs = 7
+num_epochs = args.epochs
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
 criterion = nn.MSELoss()
@@ -84,5 +106,4 @@ print(f"\n{divider}Done!")
 test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
 
-
-current_model_path = save_model("RAE", cur_model)
+current_model_path = save_model(args.model, cur_model)
