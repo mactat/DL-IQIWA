@@ -59,7 +59,7 @@ cur_model = Model()
 cur_model = cur_model.to(device)
 
 learning_rate = 1e-3
-num_epochs = 7
+num_epochs = 5
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
 criterion = nn.MSELoss()
@@ -85,4 +85,4 @@ test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
 
 
-current_model_path = save_model("RAE", cur_model)
+current_model_path = save_model("REM", cur_model)

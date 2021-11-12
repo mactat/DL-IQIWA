@@ -76,3 +76,14 @@ def validate(dataloader, model, loss_fn, transform=transforms.Resize((180, 180))
     test_loss /= num_batches
     
     return test_loss
+
+def save_model(name, model, path='../model/'):
+    now = datetime.now()
+    dt_string = now.strftime("%d%m%Y_%H_%M")
+    model_name = name + "_" + dt_string
+    full_path = path+model_name+".pth"
+    torch.save(model.state_dict(), full_path)
+    
+    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n Model Summary: \n{summary(model, (3, *input_size), batch_size)}")
+    
+    return full_path
