@@ -16,15 +16,28 @@ import numpy as np
 import random
 from datasetLoad import *
 import importlib
-
+import argparse
 
 # from model_res_enh import *
+#parsing args
 
-modellib = importlib.import_module('model_res_enh')
-Model = modellib.Model
-train = modellib.train
-validate = modellib.validate
-save_model = modellib.save_model
+
+parser = argparse.ArgumentParser(description='Parameters for training')
+
+parser.add_argument('--model',  default="model",help='Specify the model file(without .py extension)')
+parser.add_argument('--epochs',  type=int,  default=5, help='Specify the number of epochs')
+parser.add_argument('--verbose', type=bool, default=True, help='Print output or not')
+
+args = parser.parse_args()
+
+try:
+    modellib = importlib.import_module(args.model)
+    Model = modellib.Model
+    train = modellib.train
+    validate = modellib.validate
+    save_model = modellib.save_model
+except:
+    raise Exception('Unable to import model lib!') 
 
 divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
@@ -68,7 +81,7 @@ cur_model = Model()
 cur_model = cur_model.to(device)
 
 learning_rate = 1e-3
-num_epochs = 5
+num_epochs = args.epochs
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
 criterion = nn.MSELoss()
