@@ -188,3 +188,29 @@ Original image            |  Reconstruction            |  Image with noise      
 
 ### Example of 400 noised and denoised images:
 ![](/static/enhanced_conv_model_trained_with_noisy/comparision_20_20.png)
+
+
+## **Results from enhancing convolutional NN for cats and dogs**:
+
+### Model definition:
+```
+Model definition:
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+   ConvTranspose2d-1          [1, 10, 180, 180]             280
+   ConvTranspose2d-2          [1, 20, 359, 359]           1,820
+   ConvTranspose2d-3           [1, 3, 360, 360]             963
+================================================================
+Total params: 3,063
+Trainable params: 3,063
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.37
+Forward/backward pass size (MB): 25.10
+Params size (MB): 0.01
+Estimated Total Size (MB): 25.49
+----------------------------------------------------------------
+```
+### Example of image reconstruction
+![](/static/image_quality_enh/cat1.png)
