@@ -52,7 +52,7 @@ def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((18
         loss.backward()
         optimizer.step()
 
-        if batch % 1 == 1000:
+        if batch % 1000 == 0:
             loss, current = loss.item(), batch * len(t_image_batch)
             train_loss.append(loss)
             print(f"train loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
