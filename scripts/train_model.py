@@ -14,7 +14,7 @@ from IPython.display import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-from model import *
+from model_res_enh import *
 from datasetLoad import *
 
 divider = "----------------------------------------------------------------\n"
