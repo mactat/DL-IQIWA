@@ -55,24 +55,24 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 print(f"Device: {device}\n")
 
-rae = ResolutionAutoencoder()
-rae = rae.to(device)
+cur_model = Model()
+cur_model = cur_model.to(device)
 
 learning_rate = 1e-3
 num_epochs = 7
 
-optimizer = torch.optim.Adam(params=rae.parameters(), lr=learning_rate, weight_decay=1e-5)
+optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
 criterion = nn.MSELoss()
 
 print("Model definition: ")
-summary(rae, (3, 180, 180), 1)
+summary(cur_model, (3, 180, 180), 1)
 
 val_loss_avg = []
 train_loss_avg = []
 for t in range(num_epochs):
     print(f"Epoch {t+1}\n{divider}")
-    train_loss = train(dataloader_train, rae, criterion, optimizer)
-    val_loss = validate(dataloader_validation, rae, criterion)
+    train_loss = train(dataloader_train, cur_model, criterion, optimizer)
+    val_loss = validate(dataloader_validation, cur_model, criterion)
     
     train_loss_avg.append(train_loss)
     val_loss_avg.append(val_loss)
@@ -81,8 +81,8 @@ for t in range(num_epochs):
     
 print(f"\n{divider}Done!")
 
-test_loss = validate(dataloader_test, rae, criterion)
+test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
 
 
-current_model_path = save_model("RAE", rae)
+current_model_path = save_model("RAE", cur_model)
