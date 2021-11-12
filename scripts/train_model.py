@@ -14,8 +14,17 @@ from IPython.display import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import random
-from model_res_enh import *
 from datasetLoad import *
+import importlib
+
+
+# from model_res_enh import *
+
+modellib = importlib.import_module('model_res_enh')
+Model = modellib.Model
+train = modellib.train
+validate = modellib.validate
+save_model = modellib.save_model
 
 divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
