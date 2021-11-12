@@ -13,8 +13,8 @@ TODO
 - [x]  Build autoencoder
 - [x]  Build autoencoder
 - [x]  Denoise cifar10 photos
-- [ ]  Cats and dogs dataset
-- [ ]  Enhance Cats and dogs dataset photos resolution
+- [x]  Cats and dogs dataset
+- [x]  Enhance Cats and dogs dataset photos resolution
 - [ ]  Enhance cifar10 photos resolution - [link](https://www.analyticsvidhya.com/blog/2020/02/what-is-autoencoder-enhance-image-resolution/)
 - [ ]  Choose different dataset
 - [ ]  Build autoencoder and autoencoder for it
@@ -35,15 +35,34 @@ You can also set your jupyter interpreter in vscode to `http://127.0.0.1:42065/?
 
 Enjoy :)
 
-## For training without docker
-Copy your kaggle key to /scrpts
+## For training without docker and jupyter
+`git clone <repo>`
+
+`cd <project-dir>`
+
+Copy your `kaggle key` to `/scrpts`
+
 ```bash
+cd scripts
 chmod +x data data_extraction.sh 
 ./data data_extraction.sh  <name of kaggle key>
 pip3 install -r requirements.txt
-python3 model_train_cat.py
+python3 train_model.py
 ```
 
+Parameters of train_model.py:
+```
+python3 train_model.py --help
+usage: train_model.py [-h] [--model MODEL] [--epochs EPOCHS] [--verbose VERBOSE]
+
+Parameters for training
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --model MODEL      Specify the model file(without .py extension)
+  --epochs EPOCHS    Specify the number of epochs
+  --verbose VERBOSE  Print output or not
+```
 ## **Results from variational autoencoder**
 
 ### Model definition:
