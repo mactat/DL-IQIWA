@@ -30,6 +30,7 @@ parser.add_argument('--verbose', type=bool, default=True, help='Print output or 
 
 args = parser.parse_args()
 
+print(f"Model file ./{args.model}.py\n Number of epochs:{args.epochs}\n")
 try:
     modellib = importlib.import_module(args.model)
     Model = modellib.Model
