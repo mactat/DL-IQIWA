@@ -35,6 +35,15 @@ You can also set your jupyter interpreter in vscode to `http://127.0.0.1:42065/?
 
 Enjoy :)
 
+## For training without docker
+Copy your kaggle key to /scrpts
+```bash
+chmod +x data data_extraction.sh 
+./data data_extraction.sh  <name of kaggle key>
+pip3 install -r requirements.txt
+python3 model_train_cat.py
+```
+
 ## **Results from variational autoencoder**
 
 ### Model definition:
