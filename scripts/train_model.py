@@ -18,10 +18,7 @@ from datasetLoad import *
 import importlib
 import argparse
 
-# from model_res_enh import *
 #parsing args
-
-
 parser = argparse.ArgumentParser(description='Parameters for training')
 
 parser.add_argument('--model',  default="model",help='Specify the model file(without .py extension)')
@@ -30,7 +27,9 @@ parser.add_argument('--verbose', type=bool, default=True, help='Print output or 
 
 args = parser.parse_args()
 
-print(f"Model file ./{args.model}.py\n Number of epochs:{args.epochs}\n")
+print(f"Model file ./{args.model}.py\nNumber of epochs:{args.epochs}\n")
+
+
 try:
     modellib = importlib.import_module(args.model)
     Model = modellib.Model
@@ -107,5 +106,4 @@ print(f"\n{divider}Done!")
 test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
 
-
-current_model_path = save_model("REM", cur_model)
+current_model_path = save_model(args.model, cur_model)
