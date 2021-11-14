@@ -214,3 +214,5 @@ Estimated Total Size (MB): 25.49
 ```
 ### Example of image reconstruction
 ![](/static/image_quality_enh/cat1.png)
+
+![](/static/image_quality_enh/dog1.png)
