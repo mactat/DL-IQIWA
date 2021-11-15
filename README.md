@@ -63,6 +63,18 @@ optional arguments:
   --epochs EPOCHS    Specify the number of epochs
   --verbose VERBOSE  Print output or not
 ```
+
+## Storing, uplading and reusing models
+
+Models will be stored in artifactory: `https://dlmodels.jfrog.io`
+**To upload a model**
+```bash
+curl -u<USERNAME>:<PASSWORD> -T <PATH_TO_FILE> "https://dlmodels.jfrog.io/artifactory/iqiwa-generic-local/<MODEL_NAME>.pth"
+```
+**To download a model**
+```bash
+curl https://dlmodels.jfrog.io/artifactory/iqiwa-generic-local/<MODEL_NAME>.pth > model.pth
+```
 ## **Results from variational autoencoder**
 
 ### Model definition:
