@@ -84,7 +84,8 @@ learning_rate = 1e-3
 num_epochs = args.epochs
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
-criterion = nn.MSELoss()
+
+criterion = cur_model.criterion
 
 print("Model definition: ")
 summary(cur_model, (3, 180, 180), 1)
