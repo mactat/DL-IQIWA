@@ -16,6 +16,7 @@ import random
 from datasetLoad import *
 import importlib
 import argparse
+import subprocess
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for training')
@@ -91,8 +92,8 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
-log("Model definition: ")
-log(str((summary(cur_model, (3, 180, 180), 1))))
+log("Model definition: \n")
+log(str((summary(cur_model, (3, 180, 180), verbose=0))))
 
 
 val_loss_avg = []
@@ -113,6 +114,10 @@ print(f"\n{divider}Done!")
 
 test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
-log('average reconstruction error: %f' % (test_loss))
+log('average reconstruction error: %f\n' % (test_loss))
 
-current_model_path = save_model(args.model, cur_model)
+model_file_name = save_model(args.model, cur_model)
+
+import subprocess
+
+rc = subprocess.call(f"cd ../models && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")

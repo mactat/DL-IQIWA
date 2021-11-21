@@ -89,6 +89,6 @@ def save_model(name, model, path='../model/'):
     full_path = path+model_name+".pth"
     torch.save(model.state_dict(), full_path)
     
-    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n")
+    print(f"Succesfully saved model!\nPath: {full_path}\nName: {model_name}\n")
     
-    return full_path
+    return model_name
