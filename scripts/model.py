@@ -1,19 +1,7 @@
-from torch.utils.data import  DataLoader
-from torch.utils.data.dataset import Dataset
-from torchvision.io import read_image
 import torch.nn.functional as F
-import glob
-from random import randint
-from torchvision import datasets, transforms
-from torchvision.utils import make_grid
-from torchsummary import summary
+from torchvision import transforms
 import torch
 import torch.nn as nn
-from torchvision.utils import save_image
-from IPython.display import Image
-import matplotlib.pyplot as plt
-import numpy as np
-import random
 from datetime import datetime
 
 input_size = (180, 180)
@@ -52,6 +40,8 @@ class Model(nn.Module):
         super(Model, self).__init__()
         self.encoder = Encoder()
         self.decoder = Decoder()
+
+        self.criterion = nn.MSELoss()
     
     def forward(self, x):
         x = self.encoder(x)

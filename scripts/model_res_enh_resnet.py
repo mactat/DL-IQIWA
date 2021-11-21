@@ -1,19 +1,7 @@
-from torch.utils.data import  DataLoader
-from torch.utils.data.dataset import Dataset
-from torchvision.io import read_image
 import torch.nn.functional as F
-import glob
-from random import randint
-from torchvision import datasets, transforms
-from torchvision.utils import make_grid
-from torchsummary import summary
+from torchvision import transforms
 import torch
 import torch.nn as nn
-from torchvision.utils import save_image
-from IPython.display import Image
-import matplotlib.pyplot as plt
-import numpy as np
-import random
 from datetime import datetime
 
 
@@ -27,9 +15,9 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet152', pretrained=True)
 
 
-class ResolutionEnhancerModel(nn.Module):
+class Model(nn.Module):
     def __init__(self):
-        super(ResolutionEnhancerModel, self).__init__()     # input image size: 180 x 180
+        super(Model, self).__init__()     # input image size: 180 x 180
         self.up_sample = nn.Upsample(2)
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=10, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180                                                       # out image size:  90 x 90
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=3, stride=1, padding=1)   # out image size:  359 x 359
