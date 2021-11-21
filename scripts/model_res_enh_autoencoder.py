@@ -18,9 +18,9 @@ class Model(nn.Module):
 
         # decoder
         self.deconv1 = nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180
-        self.upsample = nn.UpsamplingBilinear2d(scale_factor=2)                                                     # out image size:  90 x 90
-        self.deconv2 = nn.ConvTranspose2d(in_channels=128, out_channels=256, kernel_size=3, stride=2, padding=1)   # out image size:  359 x 359
-        self.deconv3 = nn.ConvTranspose2d(in_channels=256, out_channels=3, kernel_size=4, stride=1, padding=1)   # out image size: 360 x 360
+        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                                     # out image size:  90 x 90
+        self.deconv2 = nn.ConvTranspose2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)   # out image size:  359 x 359
+        self.deconv3 = nn.ConvTranspose2d(in_channels=256, out_channels=3, kernel_size=3, stride=1, padding=1)   # out image size: 360 x 360
 
         self.criterion = nn.MSELoss()
             
@@ -89,6 +89,6 @@ def save_model(name, model, path='../model/'):
     full_path = path+model_name+".pth"
     torch.save(model.state_dict(), full_path)
     
-    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n")
+    print(f"Succesfully saved model!\nPath: {full_path}\nName: {model_name}\n")
     
-    return full_path
+    return model_name

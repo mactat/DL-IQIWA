@@ -2,9 +2,10 @@ from torch.utils.data import  DataLoader
 from torchvision import transforms
 from torchsummary import summary
 import torch
-from datasetLoad import *
+from dataset_load import *
 import importlib
 import argparse
+import subprocess
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for training')
@@ -31,6 +32,10 @@ divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
 avg_size = (360, 360)
 input_size = (180, 180)
+
+def log(inp):
+    with open(f"../model/{args.model}.log", "a") as f:
+        f.write(inp)
 
 transform = transforms.Compose(
     [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
@@ -76,12 +81,15 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
-summary(cur_model, (3, 180, 180), 1)
+log("Model definition: \n")
+log(str((summary(cur_model, (3, 180, 180), verbose=0))))
+
 
 val_loss_avg = []
 train_loss_avg = []
 for t in range(num_epochs):
     print(f"Epoch {t+1}\n{divider}")
+    log(f"Epoch {t+1}\n{divider}")
     train_loss = train(dataloader_train, cur_model, criterion, optimizer)
     val_loss = validate(dataloader_validation, cur_model, criterion)
     
@@ -89,10 +97,16 @@ for t in range(num_epochs):
     val_loss_avg.append(val_loss)
     
     print(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+    log(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
     
 print(f"\n{divider}Done!")
 
 test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
+log('average reconstruction error: %f\n' % (test_loss))
 
-current_model_path = save_model(args.model, cur_model)
+model_file_name = save_model(args.model, cur_model)
+
+import subprocess
+
+rc = subprocess.call(f"cd ../model && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")
