@@ -1,19 +1,9 @@
-from torch.utils.data import  DataLoader
 from torch.utils.data.dataset import Dataset
 from torchvision.io import read_image
-import torch.nn.functional as F
 import glob
-from random import randint
-from torchvision import datasets, transforms
-from torchvision.utils import make_grid
-from torchsummary import summary
+from torchvision import transforms
 import torch
-import torch.nn as nn
-from torchvision.utils import save_image
-from IPython.display import Image
-import matplotlib.pyplot as plt
-import numpy as np
-import random
+
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -25,24 +15,9 @@ class CatAndDogDataset(Dataset):
         for img_path in self.file_list:
             self.data.append(img_path)
 
-        
         self.transform = transform
-        if transform_upscale is not None and transform_downscale is not None:
-            self.transform_up = transform_upscale
-            self.transform_down = transform_downscale
-        else:
-          self.transform_up = transforms.Compose(
-              [
-               transforms.ToPILImage(),
-               transforms.Resize((350, 350)),
-               transforms.ToTensor()
-              ]
-          )
-          self.transform_down = transforms.Compose(
-              [
-                transforms.CenterCrop(size=(350, 350))
-              ]
-          )
+        self.transform_up = transform_upscale
+        self.transform_down = transform_downscale
 
     def __len__(self):
         return len(self.data)

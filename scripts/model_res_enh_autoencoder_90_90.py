@@ -4,51 +4,39 @@ import torch
 import torch.nn as nn
 from datetime import datetime
 
-input_size = (180, 180)
+input_size = (90, 90)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class Encoder(nn.Module):
-    def __init__(self):
-        super(Encoder, self).__init__()                                                              # input image size: 180 x 180
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=4, stride=2, padding=1)   # out image size:  90 x 90
-        self.pool = nn.MaxPool2d((2, 2))                                                             # out image size:  45 x 45
-        self.conv2 = nn.Conv2d(in_channels=32, out_channels=8, kernel_size=3, stride=2, padding=1)   # out image size:  23 x 23
-            
-    def forward(self, x):
-        x = F.relu(self.conv1(x))
-        x = self.pool(x)
-        x = F.relu(self.conv2(x))
-        return x
-
-class Decoder(nn.Module):
-    def __init__(self):
-        super(Decoder, self).__init__()
-        self.conv1 = nn.ConvTranspose2d(in_channels=8, out_channels=16, kernel_size=3, stride=2, padding=1)   # out image size: 45 x 45
-        self.upSample = nn.Upsample(scale_factor=2)                                                           # out image size:  90 x 90
-        self.conv2 = nn.ConvTranspose2d(in_channels=16, out_channels=32, kernel_size=4, stride=2, padding=1)  # out image size:  180 x 180
-        self.conv3 = nn.ConvTranspose2d(in_channels=32, out_channels=3, kernel_size=4, stride=2, padding=1)   # out image size: 360 x 360
-            
-    def forward(self, x):
-        x = F.relu(self.conv1(x))
-        x = self.upSample(x)
-        x = F.relu(self.conv2(x))
-        x = torch.sigmoid(self.conv3(x))
-        return x
-    
 class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
-        self.encoder = Encoder()
-        self.decoder = Decoder()
+        # encoder
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)  
+        self.conv2 = nn.Conv2d(in_channels=128, out_channels=64, kernel_size=3, stride=1, padding=1)  
+        self.maxpool = nn.MaxPool2d(2, stride=2)
+        self.conv3 = nn.ConvTranspose2d(in_channels=64, out_channels=32, kernel_size=3, stride=1, padding=1)  
+
+        # decoder
+        self.deconv1 = nn.ConvTranspose2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)   
+        self.upsample = nn.UpsamplingBilinear2d(scale_factor=8)                                             
+        self.deconv2 = nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)   
+        self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=3, kernel_size=3, stride=1, padding=1)
 
         self.criterion = nn.MSELoss()
-    
+            
     def forward(self, x):
-        x = self.encoder(x)
-        x = self.decoder(x)
+        #encoder
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = self.maxpool(x)
+        x = F.relu(self.conv3(x))
+
+        #decoder
+        x = F.relu(self.deconv1(x))
+        x = self.upsample(x)
+        x = F.relu(self.deconv2(x))
+        x = self.deconv3(x)
         return x
-
-
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
     size = len(dataloader.dataset)
@@ -101,6 +89,6 @@ def save_model(name, model, path='../model/'):
     full_path = path+model_name+".pth"
     torch.save(model.state_dict(), full_path)
     
-    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n")
+    print(f"Succesfully saved model!\nPath: {full_path}\nName: {model_name}\n")
     
-    return full_path
+    return model_name
