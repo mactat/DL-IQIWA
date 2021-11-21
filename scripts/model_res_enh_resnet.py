@@ -3,7 +3,6 @@ from torchvision import transforms
 import torch
 import torch.nn as nn
 from datetime import datetime
-from math import log10
 
 input_size = (180, 180)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
