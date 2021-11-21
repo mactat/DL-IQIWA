@@ -120,4 +120,4 @@ model_file_name = save_model(args.model, cur_model)
 
 import subprocess
 
-rc = subprocess.call(f"cd ../models && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")
+rc = subprocess.call(f"cd ../model && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")
