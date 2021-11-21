@@ -3,7 +3,7 @@ from torchvision import transforms
 import torch
 import torch.nn as nn
 from datetime import datetime
-
+from math import log10
 
 input_size = (180, 180)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -23,17 +23,33 @@ class Model(nn.Module):
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=3, stride=1, padding=1)   # out image size:  359 x 359
         self.conv3 = nn.Conv2d(in_channels=20, out_channels=3, kernel_size=4, stride=1, padding=1)   # out image size: 360 x 360
 
-        self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
-        self.resnet.eval()
+        # self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+        # self.resnet.eval()
 
-        def ResnetCriterion(resnet, mse):
+        def ResnetCriterion(resnet, loss):
             def criterion(pred, original):
-                return mse(resnet(pred), resnet(original))
+                return loss(resnet(pred), resnet(original))
             
             return criterion
         
-        self.criterion = ResnetCriterion(self.resnet, nn.MSELoss())
+        def PSNRCriterion(loss):
+            def criterion(pred, original):
+                return -10*torch.log10(loss(pred, original))
+            
+            return criterion
 
+        self.criterion = PSNRCriterion(nn.MSELoss())
+
+            
+    def forward(self, x):
+        x = self.up_sample(x)
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = torch.sigmoid(self.conv3(x))
+        return x
+
+        # self.criterion = ResnetCriterion(self.resnet, nn.MSELoss())
+        self.criterion = PSNRCriterion(nn.MSELoss())
             
     def forward(self, x):
         x = self.up_sample(x)
