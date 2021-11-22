@@ -51,7 +51,7 @@ class ConvolutionalBlock(nn.Module):
                       padding=kernel_size // 2))
 
         layers.append(
-            nn.Dropout(p=0.2)
+            nn.Dropout(p=0.1)
             )
 
         # A convolutional layer
@@ -116,11 +116,10 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                           
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)
-        self.block1 = ResidualBlock(3, 128)
-        self.block2 = ResidualBlock(3, 128)
-        self.block3 = ResidualBlock(3, 128)
-        self.conv2 = nn.Conv2d(in_channels=128, out_channels=3, kernel_size=3, stride=1, padding=1)  
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.block1 = ResidualBlock(3, 64)
+        self.block2 = ResidualBlock(3, 64)
+        self.conv2 = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1)  
 
         self.criterion = SSIMLoss(5)
             
@@ -130,7 +129,6 @@ class Model(nn.Module):
         x = self.conv1(x)
         x = self.block1(x)
         x = self.block2(x)
-        x = self.block3(x)
         x = self.conv2(x)
         return x
 
