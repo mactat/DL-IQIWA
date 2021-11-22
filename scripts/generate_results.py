@@ -55,7 +55,7 @@ transform_down = transforms.Compose(
     [transforms.CenterCrop(size=avg_size)]
     )
 
-dataset_test = CatAndDogDataset('../notebooks/data/test1/', transform_upscale=transform_up, transform_downscale=transform_down)
+dataset_test = CatAndDogDataset('./data/test1/', transform_upscale=transform_up, transform_downscale=transform_down)
 batch_size = 10
 
 dataloader_validation = DataLoader(dataset_test, batch_size=batch_size)
