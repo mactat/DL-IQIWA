@@ -15,7 +15,7 @@ class ConvolutionalBlock(nn.Module):
     A convolutional block, comprising convolutional, BN, activation layers.
     """
 
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, batch_norm=False, activation=None):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, batch_norm=False, activation=None, dropout=False):
         """
         :param in_channels: number of input channels
         :param out_channels: number of output channels
@@ -33,14 +33,31 @@ class ConvolutionalBlock(nn.Module):
         # A container that will hold the layers in this convolutional block
         layers = list()
 
+        # A batch normalization (BN) layer, if wanted
+        if batch_norm is True:
+            layers.append(nn.BatchNorm2d(num_features=out_channels))
+
+        # An activation layer, if wanted
+        if activation == 'prelu':
+            layers.append(nn.PReLU())
+        elif activation == 'leakyrelu':
+            layers.append(nn.LeakyReLU(0.2))
+        elif activation == 'tanh':
+            layers.append(nn.Tanh())
+
         # A convolutional layer
         layers.append(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride,
                       padding=kernel_size // 2))
 
-        # A batch normalization (BN) layer, if wanted
-        if batch_norm is True:
-            layers.append(nn.BatchNorm2d(num_features=out_channels))
+        layers.append(
+            nn.Dropout(p=0.2)
+            )
+
+        # A convolutional layer
+        layers.append(
+            nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride,
+                      padding=kernel_size // 2))
 
         # An activation layer, if wanted
         if activation == 'prelu':
@@ -99,22 +116,22 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                           
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
-        self.block1 = ResidualBlock(3, 64)
-        self.block2 = ResidualBlock(3, 64)
-        self.block3 = ResidualBlock(3, 64)
-        self.conv2 = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1)  
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.block1 = ResidualBlock(3, 128)
+        self.block2 = ResidualBlock(3, 128)
+        self.block3 = ResidualBlock(3, 128)
+        self.conv2 = nn.Conv2d(in_channels=128, out_channels=3, kernel_size=3, stride=1, padding=1)  
 
         self.criterion = SSIMLoss(5)
             
     def forward(self, x):
         #encoder
         x = self.upsample(x)
-        x = F.relu(self.conv1(x))
+        x = self.conv1(x)
         x = self.block1(x)
         x = self.block2(x)
         x = self.block3(x)
-        x = F.relu(self.conv2(x))
+        x = self.conv2(x)
         return x
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
