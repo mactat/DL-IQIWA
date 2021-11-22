@@ -66,7 +66,7 @@ for i, (image_batch) in enumerate(dataloader_validation):
 
     before_img = transforms.Resize(avg_size, interpolation=transforms.InterpolationMode.NEAREST)(resized_img)[0]
     after_img = pred[0]
-    concat_img = torch.cat((before_img, after_img), 2)
+    concat_img = torch.cat((before_img, after_img, image_batch[0]), 2)
     save_image(resized_img[0], args.out + "_before_" + str(i+1) + ".jpeg")
     save_image(after_img, args.out + "_after_" + str(i+1) + ".jpeg")
     save_image(concat_img, args.out + "_" + str(i+1) + ".jpeg")

@@ -6,7 +6,7 @@ kaggle.json
 *.zip
 *.csv
 *.json
-
+/scripts/*jpeg
 *.pth
 
 # Byte-compiled / optimized / DLL files
