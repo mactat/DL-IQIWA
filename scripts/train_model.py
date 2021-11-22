@@ -93,17 +93,20 @@ log(summary_str+"\n")
 
 val_loss_avg = []
 train_loss_avg = []
-for t in range(num_epochs):
-    print(f"Epoch {t+1}\n{divider}")
-    log(f"Epoch {t+1}\n{divider}")
-    train_loss = train(dataloader_train, cur_model, criterion, optimizer)
-    val_loss = validate(dataloader_validation, cur_model, criterion)
-    
-    train_loss_avg.append(train_loss)
-    val_loss_avg.append(val_loss)
-    
-    print(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
-    log(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+try:
+    for t in range(num_epochs):
+        print(f"Epoch {t+1}\n{divider}")
+        log(f"Epoch {t+1}\n{divider}")
+        train_loss = train(dataloader_train, cur_model, criterion, optimizer)
+        val_loss = validate(dataloader_validation, cur_model, criterion)
+        
+        train_loss_avg.append(train_loss)
+        val_loss_avg.append(val_loss)
+        
+        print(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+        log(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+except KeyboardInterrupt:
+    print("Interupted, but model will be validated anyway!")   
     
 print(f"\n{divider}Done!")
 

@@ -10,7 +10,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class MyLoss(nn.Module):
     def __init__(self):
-        super(Model,self).__init__()
+        super(MyLoss,self).__init__()
         self.criterion_GAN = torch.nn.MSELoss()
         self.criterion_pixelwise = torch.nn.L1Loss()
         self.lambda_pixel = 100
@@ -49,7 +49,7 @@ class Model(nn.Module):
         x = F.relu(self.deconv1(x))
         x = self.upsample(x)
         x = F.relu(self.deconv2(x))
-        x = F.sigmoid(self.deconv3(x))
+        x = self.deconv3(x)
         return x
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
