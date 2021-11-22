@@ -56,21 +56,22 @@ transform_down = transforms.Compose(
     )
 
 dataset_test = CatAndDogDataset('../notebooks/data/test1/', transform_upscale=transform_up, transform_downscale=transform_down)
-batch_size = 10
+batch_size = 1
 
-dataloader_validation = DataLoader(dataset_test, batch_size=batch_size)
+dataloader_validation = DataLoader(dataset_test, batch_size=batch_size, shuffle=True)
 
 print("Dataloader length: ", len(dataloader_validation))
 
 for i, (image_batch) in enumerate(dataloader_validation):
-    resized_img = transforms.Resize(input_size)(image_batch)
+    resized_img = transforms.Resize(input_size, interpolation=transforms.InterpolationMode.NEAREST)(image_batch) 
     pred = model(resized_img)
 
-    before_img = image_batch[0]
+    before_img = transforms.Resize(avg_size, interpolation=transforms.InterpolationMode.NEAREST)(resized_img)[0]
     after_img = pred[0]
-    print("tutaj")
     concat_img = torch.cat((before_img, after_img), 2)
-    save_image(concat_img, args.out + "_" + str(i) + ".jpeg")
+    save_image(resized_img[0], args.out + "_before_" + str(i+1) + ".jpeg")
+    save_image(after_img, args.out + "_after_" + str(i+1) + ".jpeg")
+    save_image(concat_img, args.out + "_" + str(i+1) + ".jpeg")
 
     if i == args.images - 1:
         break

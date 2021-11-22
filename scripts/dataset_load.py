@@ -15,24 +15,9 @@ class CatAndDogDataset(Dataset):
         for img_path in self.file_list:
             self.data.append(img_path)
 
-        
         self.transform = transform
-        if transform_upscale is not None and transform_downscale is not None:
-            self.transform_up = transform_upscale
-            self.transform_down = transform_downscale
-        else:
-          self.transform_up = transforms.Compose(
-              [
-               transforms.ToPILImage(),
-               transforms.Resize((350, 350)),
-               transforms.ToTensor()
-              ]
-          )
-          self.transform_down = transforms.Compose(
-              [
-                transforms.CenterCrop(size=(350, 350))
-              ]
-          )
+        self.transform_up = transform_upscale
+        self.transform_down = transform_downscale
 
     def __len__(self):
         return len(self.data)
