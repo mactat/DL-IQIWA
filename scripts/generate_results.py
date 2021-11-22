@@ -68,7 +68,6 @@ for i, (image_batch) in enumerate(dataloader_validation):
 
     before_img = image_batch[0]
     after_img = pred[0]
-    print("tutaj")
     concat_img = torch.cat((before_img, after_img), 2)
     save_image(concat_img, args.out + "_" + str(i) + ".jpeg")
 

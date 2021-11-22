@@ -83,7 +83,7 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
-model_stats = summary(cur_model, (3, 180, 180), verbose=0)
+model_stats = summary(cur_model, (batch_size, 3, 180, 180), verbose=0)
 
 log("Model definition: \n")
 summary_str = str(model_stats)
