@@ -109,6 +109,7 @@ class Model(nn.Module):
             
     def forward(self, x):
         #encoder
+        x = self.upsample(x)
         x = F.relu(self.conv1(x))
         x = self.block1(x)
         x = self.block2(x)
