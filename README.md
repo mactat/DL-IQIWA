@@ -264,6 +264,9 @@ Params size (MB): 1.20
 Estimated Total Size (MB): 5657.43
 ==========================================================================================
 ```
+
+[Model artifacts](https://dlmodels.jfrog.io/artifactory/iqiwa-models/model_res_enh_conv_block_our_loss_90_90/model_res_enh_conv_block_our_loss_90_90_22112021_17_03)
+
 ### Example of image reconstruction
 ![](/static/res_conv_block/1.jpeg)
 
