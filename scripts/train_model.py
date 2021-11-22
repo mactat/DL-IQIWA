@@ -6,6 +6,7 @@ from dataset_load import *
 import importlib
 import argparse
 import subprocess
+import os
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for training')
@@ -107,6 +108,7 @@ log('average reconstruction error: %f\n' % (test_loss))
 
 model_file_name = save_model(args.model, cur_model)
 
-import subprocess
 
-rc = subprocess.call(f"cd ../model && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")
+abs_path = os.path.abspath("../model")
+rc = subprocess.call(f"cd {abs_path} && ./push_to_arti.sh {args.model} {model_file_name} {args.model}", shell=True)
+
