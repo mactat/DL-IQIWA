@@ -87,6 +87,7 @@ model_stats = summary(cur_model, (batch_size, 3, 180, 180), verbose=0)
 
 log("Model definition: \n")
 summary_str = str(model_stats)
+print(summary_str+"\n")
 log(summary_str+"\n")
 
 
