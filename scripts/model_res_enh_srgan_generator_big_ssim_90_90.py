@@ -133,6 +133,7 @@ class Model(nn.Module):
         self.block3 = ResidualBlock(3, 128)
         self.conv2 = nn.Conv2d(in_channels=128, out_channels=64, kernel_size=3, stride=1, padding=1)  
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1)  
+        self.conv4 = nn.Conv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1, padding=1)  
 
         self.criterion = SSIMLoss(5)
             
@@ -144,9 +145,10 @@ class Model(nn.Module):
         x = self.block1(x)
         x = self.block2(x)
         x = self.block2(x)
-        x = x + residual
         x = self.conv2(x)
         x = self.conv3(x)
+        x = x + residual
+        x = self.conv4(x)
         return x
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
