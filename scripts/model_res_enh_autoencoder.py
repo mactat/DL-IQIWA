@@ -7,57 +7,36 @@ from datetime import datetime
 input_size = (180, 180)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# or any of these variants
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet101', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet152', pretrained=True)
-
-
 class Model(nn.Module):
     def __init__(self):
-        super(Model, self).__init__()     # input image size: 180 x 180
-        self.up_sample = nn.Upsample(2)
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=10, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180                                                       # out image size:  90 x 90
-        self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=3, stride=1, padding=1)   # out image size:  359 x 359
-        self.conv3 = nn.Conv2d(in_channels=20, out_channels=3, kernel_size=4, stride=1, padding=1)   # out image size: 360 x 360
+        super(Model, self).__init__()
+        # encoder
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)  
+        self.maxpool = nn.MaxPool2d(2, stride=2)
+        self.conv2 = nn.Conv2d(in_channels=128, out_channels=64, kernel_size=3, stride=1, padding=1)  
+        self.conv3 = nn.ConvTranspose2d(in_channels=64, out_channels=32, kernel_size=3, stride=1, padding=1)  
 
-        # self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
-        # self.resnet.eval()
+        # decoder
+        self.deconv1 = nn.ConvTranspose2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)                                           
+        self.deconv2 = nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)   
+        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)     
+        self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=3, kernel_size=3, stride=1, padding=1)
 
-        def ResnetCriterion(resnet, loss):
-            def criterion(pred, original):
-                return loss(resnet(pred), resnet(original))
-            
-            return criterion
-        
-        def PSNRCriterion(loss):
-            def criterion(pred, original):
-                return -10*torch.log10(loss(pred, original))
-            
-            return criterion
-
-        self.criterion = PSNRCriterion(nn.MSELoss())
-
+        self.criterion = nn.MSELoss()
             
     def forward(self, x):
-        x = self.up_sample(x)
+        #encoder
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
-        x = torch.sigmoid(self.conv3(x))
-        return x
+        x = self.maxpool(x)
+        x = F.relu(self.conv3(x))
 
-        # self.criterion = ResnetCriterion(self.resnet, nn.MSELoss())
-        self.criterion = PSNRCriterion(nn.MSELoss())
-            
-    def forward(self, x):
-        x = self.up_sample(x)
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = torch.sigmoid(self.conv3(x))
+        #decoder
+        x = F.relu(self.deconv1(x))
+        x = self.upsample(x)
+        x = F.relu(self.deconv2(x))
+        x = self.deconv3(x)
         return x
-    
-
 
 def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((180, 180))):
     size = len(dataloader.dataset)
@@ -85,6 +64,7 @@ def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((18
 
     return (sum(train_loss))/len(train_loss)
 
+
 def validate(dataloader, model, loss_fn, transform=transforms.Resize((180, 180))):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
@@ -109,6 +89,6 @@ def save_model(name, model, path='../model/'):
     full_path = path+model_name+".pth"
     torch.save(model.state_dict(), full_path)
     
-    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n")
+    print(f"Succesfully saved model!\nPath: {full_path}\nName: {model_name}\n")
     
-    return full_path
+    return model_name

@@ -19,7 +19,7 @@ RUN pip3 install \
     # Numpy and Pandas are required a-priori
     numpy pandas \
     # PyTorch with CUDA 10.2 support and Torchvision
-    torch torchvision torchsummary\
+    torch torchvision torchinfo\
     # Upgraded version of Tensorboard with more features
     tensorboardX \
     # Matplotlib

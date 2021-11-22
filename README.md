@@ -228,3 +228,45 @@ Estimated Total Size (MB): 25.49
 ![](/static/image_quality_enh/cat1.png)
 
 ![](/static/image_quality_enh/dog1.png)
+
+
+## **Results from enhancing phots resolution using residual convolutional blocks**:
+
+### Model definition:
+```
+Model definition: 
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Model                                    --                        --
+├─UpsamplingBilinear2d: 1-1              [5, 3, 360, 360]          --
+├─Conv2d: 1-2                            [5, 64, 360, 360]         1,792
+├─ResidualBlock: 1-3                     [5, 64, 360, 360]         --
+│    └─ConvolutionalBlock: 2-1           [5, 64, 360, 360]         --
+│    │    └─Sequential: 3-1              [5, 64, 360, 360]         73,986
+│    └─ConvolutionalBlock: 2-2           [5, 64, 360, 360]         --
+│    │    └─Sequential: 3-2              [5, 64, 360, 360]         73,984
+├─ResidualBlock: 1-4                     [5, 64, 360, 360]         --
+│    └─ConvolutionalBlock: 2-3           [5, 64, 360, 360]         --
+│    │    └─Sequential: 3-3              [5, 64, 360, 360]         73,986
+│    └─ConvolutionalBlock: 2-4           [5, 64, 360, 360]         --
+│    │    └─Sequential: 3-4              [5, 64, 360, 360]         73,984
+├─Conv2d: 1-5                            [5, 3, 360, 360]          1,731
+==========================================================================================
+Total params: 299,463
+Trainable params: 299,463
+Non-trainable params: 0
+Total mult-adds (G): 193.72
+==========================================================================================
+Input size (MB): 0.49
+Forward/backward pass size (MB): 5655.74
+Params size (MB): 1.20
+Estimated Total Size (MB): 5657.43
+==========================================================================================
+```
+### Example of image reconstruction
+![](/static/res_conv_block/1.jpeg)
+
+![](/static/res_conv_block/2.jpeg)
+
+![](/static/res_conv_block/3.jpeg)
