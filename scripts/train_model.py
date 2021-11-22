@@ -33,7 +33,7 @@ except:
 divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
 avg_size = (360, 360)
-input_size = (180, 180)
+input_size = modellib.input_size
 
 def log(inp):
     with open(f"../model/{args.model}.log", "a") as f:
@@ -83,7 +83,7 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
-model_stats = summary(cur_model, (batch_size, 3, 180, 180), verbose=0)
+model_stats = summary(cur_model, (batch_size, 3, input_size[0], input_size[1]), verbose=0)
 
 log("Model definition: \n")
 summary_str = str(model_stats)

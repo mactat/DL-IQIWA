@@ -24,9 +24,7 @@ args = parser.parse_args()
 try:
     modellib = importlib.import_module(args.modeldef)
     Model = modellib.Model
-    train = modellib.train
-    validate = modellib.validate
-    save_model = modellib.save_model
+    input_size = modellib.input_size
 except:
     raise Exception('Unable to import model lib!')
 
@@ -39,7 +37,7 @@ except:
 
 min_size = (33, 42)
 avg_size = (360, 360)
-input_size = (180, 180)
+
 
 transform = transforms.Compose(
     [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
