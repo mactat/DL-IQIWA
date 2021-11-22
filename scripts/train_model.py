@@ -1,6 +1,7 @@
 from torch.utils.data import  DataLoader
 from torchvision import transforms
-from torchsummary import summary
+from torchinfo import summary
+
 import torch
 from dataset_load import *
 import importlib
@@ -82,8 +83,11 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
+model_stats = summary(cur_model, (3, 180, 180), verbose=0)
+
 log("Model definition: \n")
-log(str((summary(cur_model, (3, 180, 180), verbose=0))))
+summary_str = str(model_stats)
+log(summary_str+"\n")
 
 
 val_loss_avg = []
