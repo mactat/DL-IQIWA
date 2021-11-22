@@ -11,16 +11,16 @@ class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
         # encoder
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=256, kernel_size=3, stride=1, padding=1)  
-        self.conv2 = nn.Conv2d(in_channels=256, out_channels=128, kernel_size=3, stride=1, padding=1)  
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)  
         self.maxpool = nn.MaxPool2d(2, stride=2)
-        self.conv3 = nn.ConvTranspose2d(in_channels=128, out_channels=64, kernel_size=3, stride=1, padding=1)  
+        self.conv2 = nn.Conv2d(in_channels=128, out_channels=64, kernel_size=3, stride=1, padding=1)  
+        self.conv3 = nn.ConvTranspose2d(in_channels=64, out_channels=32, kernel_size=3, stride=1, padding=1)  
 
         # decoder
-        self.deconv1 = nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180
-        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                                     # out image size:  90 x 90
-        self.deconv2 = nn.ConvTranspose2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)   # out image size:  359 x 359
-        self.deconv3 = nn.ConvTranspose2d(in_channels=256, out_channels=3, kernel_size=3, stride=1, padding=1)   # out image size: 360 x 360
+        self.deconv1 = nn.ConvTranspose2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)                                           
+        self.deconv2 = nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)   
+        self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)     
+        self.deconv3 = nn.ConvTranspose2d(in_channels=128, out_channels=3, kernel_size=3, stride=1, padding=1)
 
         self.criterion = nn.MSELoss()
             

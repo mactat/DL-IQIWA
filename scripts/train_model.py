@@ -1,11 +1,13 @@
 from torch.utils.data import  DataLoader
 from torchvision import transforms
-from torchsummary import summary
+from torchinfo import summary
+
 import torch
 from dataset_load import *
 import importlib
 import argparse
 import subprocess
+import os
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for training')
@@ -81,8 +83,12 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
+model_stats = summary(cur_model, (batch_size, 3, 180, 180), verbose=0)
+
 log("Model definition: \n")
-log(str((summary(cur_model, (3, 180, 180), verbose=0))))
+summary_str = str(model_stats)
+print(summary_str+"\n")
+log(summary_str+"\n")
 
 
 val_loss_avg = []
@@ -107,6 +113,7 @@ log('average reconstruction error: %f\n' % (test_loss))
 
 model_file_name = save_model(args.model, cur_model)
 
-import subprocess
 
-rc = subprocess.call(f"cd ../model && ./push_to_arti.sh {args.model} {model_file_name} {args.model}.log")
+abs_path = os.path.abspath("../model")
+rc = subprocess.call(f"cd {abs_path} && ./push_to_arti.sh {args.model} {model_file_name} {args.model}", shell=True)
+
