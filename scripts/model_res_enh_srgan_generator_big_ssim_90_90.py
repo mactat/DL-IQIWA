@@ -131,7 +131,7 @@ class Model(nn.Module):
         self.block1 = ResidualBlock(3, 64)
         self.block2 = ResidualBlock(3, 64)
         self.block3 = ResidualBlock(3, 64)
-        self.bn = nn.BatchNorm2d(num_features=3) 
+        self.bn = nn.BatchNorm2d(num_features=64) 
         self.conv2 = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1)
 
         self.criterion = SSIMLoss(5)
