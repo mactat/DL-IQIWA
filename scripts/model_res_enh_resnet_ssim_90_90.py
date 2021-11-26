@@ -116,8 +116,8 @@ class Model(nn.Module):
     def forward(self, x):
         #encoder
         x = self.upsample(x)
-        residual = x
         x = self.conv1(x)
+        residual = x
         x = self.block1(x)
         x = self.block2(x)
         x = x + residual
