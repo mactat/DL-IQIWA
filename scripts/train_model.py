@@ -75,7 +75,7 @@ print(f"Device: {device}\n")
 cur_model = Model()
 cur_model = cur_model.to(device)
 
-learning_rate = 1e-3
+learning_rate = 1e-4
 num_epochs = args.epochs
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
