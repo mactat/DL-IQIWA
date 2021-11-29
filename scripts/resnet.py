@@ -124,7 +124,7 @@ class ResidualBlock(nn.Module):
 
 class Resnet(nn.Module):
     def __init__(self):
-        super(Model, self).__init__()
+        super(Resnet, self).__init__()
 
         self.upsample = nn.UpsamplingBilinear2d(scale_factor=4)                                           
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)

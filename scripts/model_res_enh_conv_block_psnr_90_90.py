@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 from datetime import datetime
 
-from kornia.losses.ssim import SSIMLoss
-from kornia.losses.psnr import PSNRLoss
+
+
 
 input_size = (90, 90)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

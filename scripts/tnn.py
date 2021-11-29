@@ -9,7 +9,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Tnn(nn.Module):
     def __init__(self):
-        super(Model, self).__init__()                                                               # input image size: 180 x 180
+        super(Tnn, self).__init__()                                                               # input image size: 180 x 180
         self.conv1 = nn.ConvTranspose2d(in_channels=3, out_channels=10, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180                                                       # out image size:  90 x 90
         self.conv2 = nn.ConvTranspose2d(in_channels=10, out_channels=20, kernel_size=3, stride=2, padding=1)   # out image size:  359 x 359
         self.conv3 = nn.ConvTranspose2d(in_channels=20, out_channels=3, kernel_size=4, stride=1, padding=1)   # out image size: 360 x 360

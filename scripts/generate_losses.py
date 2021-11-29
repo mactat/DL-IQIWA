@@ -43,7 +43,7 @@ except:
 
 
 mseLoss = nn.MSELoss()
-psnrLoss = PSNRLoss()
+psnrLoss = PSNRLoss(1)
 ssimLoss = SSIMLoss(5)
 
 MSE_losses  = [0, 0, 0, 0]
