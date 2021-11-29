@@ -76,6 +76,15 @@ for i, image_batch in enumerate(dataloader_test):
     PSNR_losses[2] += psnrLoss(scaled_up_bestModel, image_batch)
     PSNR_losses[3] += psnrLoss(scaled_up_transposeModel, image_batch)
 
+    if i % 100 == 0:
+        print("MSE losses")
+        print(MSE_losses)
+        print("PSNR losses")
+        print(psnrLoss)
+        print("SSIM losses")
+        print(SSIM_losses)
+
+
 
 for j in range(len(MSE_losses)):
     MSE_losses[i] = MSE_losses[i]/len(dataloader_test) 
