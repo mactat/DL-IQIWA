@@ -7,7 +7,7 @@ from datetime import datetime
 input_size = (180, 180)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class Model(nn.Module):
+class Tnn(nn.Module):
     def __init__(self):
         super(Model, self).__init__()                                                               # input image size: 180 x 180
         self.conv1 = nn.ConvTranspose2d(in_channels=3, out_channels=10, kernel_size=3, stride=1, padding=1)    # out image size: 180 x180                                                       # out image size:  90 x 90

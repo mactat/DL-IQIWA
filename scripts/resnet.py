@@ -122,7 +122,7 @@ class ResidualBlock(nn.Module):
 
 
 
-class Model(nn.Module):
+class Resnet(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
 

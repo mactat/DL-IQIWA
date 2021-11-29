@@ -7,7 +7,8 @@ import torch.nn as nn
 from kornia.losses.ssim import SSIMLoss
 from kornia.losses.psnr import PSNRLoss, psnr_loss
 
-
+from resnet import Resnet
+from tnn import Tnn
 input_size = (90, 90)
 avg_size = (360, 360)
 
@@ -31,14 +32,12 @@ dataset_test = CatAndDogDataset('./data/test1/', transform_upscale=transform_up,
 dataloader_test = DataLoader(dataset_test, batch_size=1, shuffle=True)
 
 try:
-    bestModelLib = importlib.import_module("resnet")
-    transposeModelLib = importlib.import_module("tnn")
 
-    bestModel = bestModelLib.Model
-    transposeModel = transposeModelLib.Model
+    bestModel = Resnet()
+    transposeModel = Tnn()
 
-    bestModelLib.load_state_dict(torch.load("resnet.pth"))
-    transposeModelLib.load_state_dict(torch.load("tnn.pth"))
+    bestModel.load_state_dict(torch.load("resnet.pth"))
+    transposeModel.load_state_dict(torch.load("tnn.pth"))
 except:
     raise Exception('Unable to import model lib!') 
 
