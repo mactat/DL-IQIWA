@@ -85,3 +85,10 @@ for j in range(len(MSE_losses)):
     PSNR_losses[i] = MSE_losses[i]/len(dataloader_test) 
     SSIM_losses[i] = MSE_losses[i]/len(dataloader_test)
 
+
+print("MSE losses")
+print(MSE_losses)
+print("PSNR losses")
+print(psnrLoss)
+print("SSIM losses")
+print(SSIM_losses)
