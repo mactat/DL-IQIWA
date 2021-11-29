@@ -31,15 +31,11 @@ dataset_test = CatAndDogDataset('./data/test1/', transform_upscale=transform_up,
 
 dataloader_test = DataLoader(dataset_test, batch_size=1, shuffle=True)
 
-try:
+bestModel = Resnet()
+transposeModel = Tnn()
 
-    bestModel = Resnet()
-    transposeModel = Tnn()
-
-    bestModel.load_state_dict(torch.load("resnet.pth"))
-    transposeModel.load_state_dict(torch.load("tnn.pth"))
-except:
-    raise Exception('Unable to import model lib!') 
+bestModel.load_state_dict(torch.load("resnet.pth"))
+transposeModel.load_state_dict(torch.load("tnn.pth"))
 
 
 mseLoss = nn.MSELoss()
@@ -54,6 +50,8 @@ resize_t = transforms.Resize(input_size)
 resize_t_180 = transforms.Resize((180, 180))
 resize_t_nearest = transforms.Resize((360, 360), interpolation=InterpolationMode.NEAREST)
 resize_t_bicubic = transforms.Resize((360, 360), interpolation=InterpolationMode.BICUBIC)
+
+print("Generating losses")
 for i, image_batch in enumerate(dataloader_test):
     scaled_down_180 = resize_t_180(image_batch)
     scaled_down_90 = resize_t(image_batch)
