@@ -36,6 +36,9 @@ transposeModel = Tnn()
 
 bestModel.load_state_dict(torch.load("resnet.pth"))
 transposeModel.load_state_dict(torch.load("tnn.pth"))
+bestModel.to(device)
+transposeModel.to(device)
+
 
 bestModel.eval()
 transposeModel.eval()
@@ -49,12 +52,13 @@ SSIM_losses = [0, 0, 0, 0]
 PSNR_losses = [0, 0, 0, 0]
 
 resize_t = transforms.Resize(input_size)
-resize_t_180 = transforms.Resize((180, 180))
+resize_t_180 = transforms.Resize((90, 90))
 resize_t_nearest = transforms.Resize((360, 360), interpolation=InterpolationMode.NEAREST)
 resize_t_bicubic = transforms.Resize((360, 360), interpolation=InterpolationMode.BICUBIC)
 
 print("Generating losses")
 for i, image_batch in enumerate(dataloader_test):
+    image_batch = image_batch.to(device)
     scaled_down_180 = resize_t_180(image_batch)
     scaled_down_90 = resize_t(image_batch)
 
