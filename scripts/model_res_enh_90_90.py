@@ -17,6 +17,7 @@ class Model(nn.Module):
         self.criterion = nn.MSELoss()
             
     def forward(self, x):
+        #encoder
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = torch.sigmoid(self.conv3(x))
@@ -49,7 +50,7 @@ def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(inp
     return (sum(train_loss))/len(train_loss)
 
 
-def validate(dataloader, model, loss_fn, transform=transforms.Resize(input_size)):
+def validate(dataloader, model, loss_fn, transform=transforms.Resize((180, 180))):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     model.eval()
@@ -73,6 +74,6 @@ def save_model(name, model, path='../model/'):
     full_path = path+model_name+".pth"
     torch.save(model.state_dict(), full_path)
     
-    print(f"Succesfully saved model!\nPath: {path}\nName: {model_name}\n")
+    print(f"Succesfully saved model!\nPath: {full_path}\nName: {model_name}\n")
     
     return full_path
