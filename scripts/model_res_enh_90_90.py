@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from datetime import datetime
 
-input_size = (180, 180)
+input_size = (90, 90)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Model(nn.Module):
