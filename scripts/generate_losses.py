@@ -37,6 +37,8 @@ transposeModel = Tnn()
 bestModel.load_state_dict(torch.load("resnet.pth"))
 transposeModel.load_state_dict(torch.load("tnn.pth"))
 
+bestModel.eval()
+transposeModel.eval()
 
 mseLoss = nn.MSELoss()
 psnrLoss = PSNRLoss(1)
@@ -61,26 +63,26 @@ for i, image_batch in enumerate(dataloader_test):
     scaled_up_bestModel = bestModel(scaled_down_90)
     scaled_up_transposeModel = transposeModel(scaled_down_180)
 
-    MSE_losses[0] +=  mseLoss(scaled_up_nearest, image_batch)
-    MSE_losses[1] +=  mseLoss(scaled_up_bicubic, image_batch)
-    MSE_losses[2] +=  mseLoss(scaled_up_bestModel, image_batch)
-    MSE_losses[3] +=  mseLoss(scaled_up_transposeModel, image_batch)
+    MSE_losses[0] = (MSE_losses[0]*i +  mseLoss(scaled_up_nearest, image_batch).item())/(i+1)
+    MSE_losses[1] = (MSE_losses[1]*i +  mseLoss(scaled_up_bicubic, image_batch).item())/(i+1)
+    MSE_losses[2] = (MSE_losses[2]*i +  mseLoss(scaled_up_transposeModel, image_batch).item())/(i+1)
+    MSE_losses[3] = (MSE_losses[3]*i +  mseLoss(scaled_up_bestModel, image_batch).item())/(i+1)
 
-    SSIM_losses[0] += ssimLoss(scaled_up_nearest, image_batch)
-    SSIM_losses[1] += ssimLoss(scaled_up_bicubic, image_batch)
-    SSIM_losses[2] += ssimLoss(scaled_up_bestModel, image_batch)
-    SSIM_losses[3] += ssimLoss(scaled_up_transposeModel, image_batch)
+    SSIM_losses[0] = (SSIM_losses[0]*i +  ssimLoss(scaled_up_nearest, image_batch).item())/(i+1)
+    SSIM_losses[1] = (SSIM_losses[1]*i +  ssimLoss(scaled_up_bicubic, image_batch).item())/(i+1)
+    SSIM_losses[2] = (SSIM_losses[2]*i +  ssimLoss(scaled_up_transposeModel, image_batch).item())/(i+1)
+    SSIM_losses[3] = (SSIM_losses[3]*i +  ssimLoss(scaled_up_bestModel, image_batch).item())/(i+1)
 
-    PSNR_losses[0] += psnrLoss(scaled_up_nearest, image_batch)
-    PSNR_losses[1] += psnrLoss(scaled_up_bicubic, image_batch)
-    PSNR_losses[2] += psnrLoss(scaled_up_bestModel, image_batch)
-    PSNR_losses[3] += psnrLoss(scaled_up_transposeModel, image_batch)
+    PSNR_losses[0] = (PSNR_losses[0]*i +  psnrLoss(scaled_up_nearest, image_batch).item())/(i+1)
+    PSNR_losses[1] = (PSNR_losses[1]*i +  psnrLoss(scaled_up_bicubic, image_batch).item())/(i+1)
+    PSNR_losses[2] = (PSNR_losses[2]*i +  psnrLoss(scaled_up_transposeModel, image_batch).item())/(i+1)
+    PSNR_losses[3] = (PSNR_losses[3]*i +  psnrLoss(scaled_up_bestModel, image_batch).item())/(i+1)
 
-    if i % 100 == 0:
+    if i % 1 == 0:
         print("MSE losses")
         print(MSE_losses)
         print("PSNR losses")
-        print(psnrLoss)
+        print(PSNR_losses)
         print("SSIM losses")
         print(SSIM_losses)
 
@@ -95,6 +97,6 @@ for j in range(len(MSE_losses)):
 print("MSE losses")
 print(MSE_losses)
 print("PSNR losses")
-print(psnrLoss)
+print(PSNR_losses)
 print("SSIM losses")
 print(SSIM_losses)
