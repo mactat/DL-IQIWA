@@ -22,7 +22,7 @@ class Model(nn.Module):
         x = torch.sigmoid(self.conv3(x))
         return x
 
-def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((180, 180))):
+def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((90, 90))):
     size = len(dataloader.dataset)
     model.train()
     train_loss = []
