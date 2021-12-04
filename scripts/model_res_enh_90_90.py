@@ -22,7 +22,7 @@ class Model(nn.Module):
         x = torch.sigmoid(self.conv3(x))
         return x
 
-def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((90, 90))):
+def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize(input_size)):
     size = len(dataloader.dataset)
     model.train()
     train_loss = []
@@ -49,7 +49,7 @@ def train(dataloader, model, loss_fn, optimizer, transform=transforms.Resize((90
     return (sum(train_loss))/len(train_loss)
 
 
-def validate(dataloader, model, loss_fn, transform=transforms.Resize((180, 180))):
+def validate(dataloader, model, loss_fn, transform=transforms.Resize(input_size)):
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     model.eval()
