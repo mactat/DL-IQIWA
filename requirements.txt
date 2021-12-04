@@ -4,6 +4,8 @@ pandas
 torch 
 torchvision 
 torchsummary
+torchinfo
 tensorboardX
 matplotlib
 kaggle
+kornia

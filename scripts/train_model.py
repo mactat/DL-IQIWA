@@ -1,22 +1,13 @@
 from torch.utils.data import  DataLoader
-from torch.utils.data.dataset import Dataset
-from torchvision.io import read_image
-import torch.nn.functional as F
-import glob
-from random import randint
-from torchvision import datasets, transforms
-from torchvision.utils import make_grid
-from torchsummary import summary
+from torchvision import transforms
+from torchinfo import summary
+
 import torch
-import torch.nn as nn
-from torchvision.utils import save_image
-from IPython.display import Image
-import matplotlib.pyplot as plt
-import numpy as np
-import random
-from datasetLoad import *
+from dataset_load import *
 import importlib
 import argparse
+import subprocess
+import os
 
 #parsing args
 parser = argparse.ArgumentParser(description='Parameters for training')
@@ -42,7 +33,11 @@ except:
 divider = "----------------------------------------------------------------\n"
 min_size = (33, 42)
 avg_size = (360, 360)
-input_size = (180, 180)
+input_size = modellib.input_size
+
+def log(inp):
+    with open(f"../model/{args.model}.log", "a") as f:
+        f.write(inp)
 
 transform = transforms.Compose(
     [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
@@ -80,7 +75,7 @@ print(f"Device: {device}\n")
 cur_model = Model()
 cur_model = cur_model.to(device)
 
-learning_rate = 1e-3
+learning_rate = 1e-4
 num_epochs = args.epochs
 
 optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, weight_decay=1e-5)
@@ -88,23 +83,40 @@ optimizer = torch.optim.Adam(params=cur_model.parameters(), lr=learning_rate, we
 criterion = cur_model.criterion
 
 print("Model definition: ")
-summary(cur_model, (3, 180, 180), 1)
+model_stats = summary(cur_model, (batch_size, 3, input_size[0], input_size[1]), verbose=0)
+
+log("Model definition: \n")
+summary_str = str(model_stats)
+print(summary_str+"\n")
+log(summary_str+"\n")
+
 
 val_loss_avg = []
 train_loss_avg = []
-for t in range(num_epochs):
-    print(f"Epoch {t+1}\n{divider}")
-    train_loss = train(dataloader_train, cur_model, criterion, optimizer)
-    val_loss = validate(dataloader_validation, cur_model, criterion)
-    
-    train_loss_avg.append(train_loss)
-    val_loss_avg.append(val_loss)
-    
-    print(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+try:
+    for t in range(num_epochs):
+        print(f"Epoch {t+1}\n{divider}")
+        log(f"Epoch {t+1}\n{divider}")
+        train_loss = train(dataloader_train, cur_model, criterion, optimizer)
+        val_loss = validate(dataloader_validation, cur_model, criterion)
+        
+        train_loss_avg.append(train_loss)
+        val_loss_avg.append(val_loss)
+        
+        print(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+        log(f"Train loss: {train_loss:>8f}\nTest Error: {val_loss:>8f} \n")
+except KeyboardInterrupt:
+    print("Interupted, but model will be validated anyway!")   
     
 print(f"\n{divider}Done!")
 
 test_loss = validate(dataloader_test, cur_model, criterion)
 print('average reconstruction error: %f' % (test_loss))
+log('average reconstruction error: %f\n' % (test_loss))
 
-current_model_path = save_model(args.model, cur_model)
+model_file_name = save_model(args.model, cur_model)
+
+
+abs_path = os.path.abspath("../model")
+rc = subprocess.call(f"cd {abs_path} && ./push_to_arti.sh {args.model} {model_file_name} {args.model}", shell=True)
+
