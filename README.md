@@ -149,6 +149,10 @@ Estimated Total Size (MB): 0.30
 ----------------------------------------------------------------
 ```
 
+### Diagram
+
+![](/static/diagrams/autoenc-diag.png) 
+
 ### Example of image reconstruction
 
 Original image            |  Reconstruction            |  Image with noise            |  Reconstruction
@@ -224,6 +228,10 @@ Params size (MB): 0.01
 Estimated Total Size (MB): 25.49
 ----------------------------------------------------------------
 ```
+###  Diagram
+
+![](/static/diagrams/deconv-diag.png)
+
 ### Example of image reconstruction
 ![](/static/image_quality_enh/cat1.png)
 
