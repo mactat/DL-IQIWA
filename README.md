@@ -15,11 +15,7 @@ TODO
 - [x]  Denoise cifar10 photos
 - [x]  Cats and dogs dataset
 - [x]  Enhance Cats and dogs dataset photos resolution
-- [ ]  Enhance cifar10 photos resolution - [link](https://www.analyticsvidhya.com/blog/2020/02/what-is-autoencoder-enhance-image-resolution/)
-- [ ]  Choose different dataset
-- [ ]  Build autoencoder and autoencoder for it
-- [ ]  Enhance and denoise - real-life photos
-- [ ]  Poster
+- [x]  Poster
 
 ## For local development
 Dev docker image: `mactat/dl-iqiwa:latest`
@@ -76,7 +72,7 @@ curl -u<USERNAME>:<PASSWORD> -T <PATH_TO_FILE> "https://dlmodels.jfrog.io/artifa
 curl https://dlmodels.jfrog.io/artifactory/iqiwa-generic-local/<MODEL_NAME>.pth > model.pth
 ```
 ## **Results from variational autoencoder**
-
+[link to notebook](https://github.com/mactat/DL-IQIWA/blob/main/notebooks/Vae.ipynb)
 ### Model definition:
 
 ```
@@ -206,8 +202,8 @@ Original image            |  Reconstruction            |  Image with noise      
 ![](/static/enhanced_conv_model_trained_with_noisy/comparision_20_20.png)
 
 
-## **Results from enhancing convolutional NN for cats and dogs**:
-
+## **Results from enhancing images resolution using convolutional NN for cats and dogs**:
+[link to script](https://github.com/mactat/DL-IQIWA/blob/main/scripts/model_res_enh.py)
 ### Model definition:
 ```
 Model definition:
@@ -239,7 +235,7 @@ Estimated Total Size (MB): 25.49
 
 
 ## **Results from enhancing phots resolution using residual convolutional blocks**:
-
+[link to script](https://github.com/mactat/DL-IQIWA/blob/main/scripts/model_res_enh_conv_block_our_loss_90_90.py)
 ### Model definition:
 ```
 Model definition: 
