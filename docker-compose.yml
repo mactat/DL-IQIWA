@@ -7,7 +7,6 @@ services:
         build:
             context: ./
             dockerfile: ./Dockerfile
-        runtime: nvidia
         env_file: ./.env
         ports:
             - ${JUPYTER_PORT}:${JUPYTER_PORT}
